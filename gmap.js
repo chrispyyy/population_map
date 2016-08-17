@@ -241,16 +241,39 @@ function initMap() {
     // scaling the area of the circle based on the population.
     for (var city in citymap) {
       var cityCircle = new google.maps.Circle({
-        strokeColor: '#FF0000',
+        strokeColor: '#ee7511',
         strokeOpacity: 0.9,
         strokeWeight: 1,
-        fillColor: '#FF0000',
-        fillOpacity: 0.45,
+        fillColor: '#ee7511',
+        fillOpacity: 0.75,
         map: map,
         center: citymap[city].center,
-        radius: Math.sqrt(citymap[city].population) * 80000
+        radius: Math.sqrt(citymap[city].population) * 90000
       });
     }
+    var iconBase = './assets/';
+       var icons = {
+         intern_circle: {
+           name: 'Internships',
+           icon: iconBase + 'interncircle.png'
+         }
+         ,
+         residence_circle: {
+           name: 'Fellows Now',
+           icon: iconBase + 'residencecircle.png'
+         }
+       };
+
+    var legend = document.getElementById('legend');
+        for (var key in icons) {
+          var type = icons[key];
+          var name = type.name;
+          var icon = type.icon;
+          var div = document.createElement('div');
+          div.innerHTML = '<img src="' + icon + '"> ' + name;
+          legend.appendChild(div);
+        }
+
     for (var residence in residencemap) {
       // Add the circle for this city to the map.
       var residenceCircle = new google.maps.Circle({
@@ -261,10 +284,13 @@ function initMap() {
         fillOpacity: 0.45,
         map: map,
         center: residencemap[residence].center,
-        radius: Math.sqrt(residencemap[residence].population) * 80000
+        radius: Math.sqrt(residencemap[residence].population) * 90000
         //*80000 was to scale the circles large enough to see it in the entire world view
       });
     }
+
+    //position the legend
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
     //toggle the styled map and the default map
   map.mapTypes.set('map_style', styledMap);
   map.setMapTypeId('map_style');
